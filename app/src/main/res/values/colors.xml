@@ -10,5 +10,8 @@
     <color name="border">#FFE6E6E1</color>
     <color name="ink">#FF16161A</color>
     <color name="accent">#FF14524A</color>
-
+    <color name="dot_inactive">#FFCFCFC8</color>
+    <color name="ink_soft">#FF3A3A36</color>
+    <color name="divider">#FFEFEFEB</color>
+    <color name="star">#FFB07A12</color>
 </resources>

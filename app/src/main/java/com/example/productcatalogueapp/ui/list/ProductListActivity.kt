@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.productcatalogue.ui.list.LoadMoreAdapter
 import com.example.productcatalogueapp.databinding.ActivityProductListBinding
 import com.example.productcatalogueapp.di.ServiceLocator
+import com.example.productcatalogueapp.ui.detail.ProductDetailActivity
 import com.example.productcatalogueapp.ui.toMessageRes
 
 class ProductListActivity : AppCompatActivity() {
@@ -20,7 +21,9 @@ class ProductListActivity : AppCompatActivity() {
         ProductListViewModelFactory(ServiceLocator.productRepository)
     }
 
-    private val productAdapter = ProductAdapter()
+    private val productAdapter = ProductAdapter { product ->
+        startActivity(ProductDetailActivity.newIntent(this, product.id))
+    }
     private val loadMoreAdapter = LoadMoreAdapter { viewModel.onRetryAppend() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

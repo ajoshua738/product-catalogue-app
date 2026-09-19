@@ -1,7 +1,6 @@
 package com.example.productcatalogueapp.data.remote
 
 import com.example.productcatalogueapp.BuildConfig
-import com.example.productcatalogueapp.data.remote.dto.ProductAPI
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient

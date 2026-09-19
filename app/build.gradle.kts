@@ -33,7 +33,7 @@ android {
 
     buildFeatures {
         viewBinding = true
-        buildConfig = true   // needed for BuildConfig.DEBUG later
+        buildConfig = true
     }
 }
 
@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.coil)
+
+    // Viewpager2
+    implementation(libs.androidx.viewpager2)
 
     implementation(libs.material)
     testImplementation(libs.junit)

@@ -4,7 +4,9 @@ import com.example.productcatalogueapp.core.AppError
 import com.example.productcatalogueapp.core.AppResult
 import com.example.productcatalogueapp.core.Logger
 import com.example.productcatalogueapp.data.mapper.toDomain
-import com.example.productcatalogueapp.data.remote.dto.ProductAPI
+import com.example.productcatalogueapp.data.mapper.toDomainOrNull
+import com.example.productcatalogueapp.data.remote.ProductAPI
+import com.example.productcatalogueapp.domain.model.Product
 import com.example.productcatalogueapp.domain.model.ProductPage
 import com.example.productcatalogueapp.domain.repository.ProductRepository
 import com.squareup.moshi.JsonDataException
@@ -23,6 +25,16 @@ class ProductRepositoryImpl(
 
     override suspend fun getProducts(limit: Int, skip: Int): AppResult<ProductPage> =
         safeApiCall { api.getProducts(limit, skip).toDomain() }
+
+    override suspend fun getProductDetail(id: Int): AppResult<Product> =
+        when (val result = safeApiCall { api.getProduct(id) }) {
+            is AppResult.Success ->
+                result.data.toDomainOrNull()
+                    ?.let { AppResult.Success(it) }
+                    ?: AppResult.Failure(AppError.Serialization)
+
+            is AppResult.Failure -> result
+        }
 
     private suspend fun <T> safeApiCall(block: suspend () -> T): AppResult<T> =
         withContext(ioDispatcher) {

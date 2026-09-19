@@ -12,19 +12,23 @@ import com.example.productcatalogueapp.domain.model.Product
 import coil.load
 import com.example.productcatalogueapp.R
 
-class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DIFF) {
+class ProductAdapter(
+    private val onClick: (Product) -> Unit
+) : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DIFF) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ProductViewHolder(binding)
+        return ProductViewHolder(binding, onClick)
     }
+
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
     class ProductViewHolder(
-        private val binding: ItemProductBinding
+        private val binding: ItemProductBinding,
+        private val onClick: (Product) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) = with(binding) {
@@ -37,6 +41,8 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DI
                 placeholder(R.drawable.ic_image_placeholder)
                 error(R.drawable.ic_image_placeholder)
             }
+
+            root.setOnClickListener { onClick(product) }
         }
 
     }
