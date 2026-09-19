@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProductCatalogueApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.list.ProductListActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

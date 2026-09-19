@@ -1,3 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProductCatalogueApp</string>
+    <string name="app_name">Product Catalogue</string>
+
+    <string name="list_title">Products</string>
+    <string name="search_hint">Search products</string>
+
+    <string name="state_error_title">Can\'t load products</string>
+    <string name="state_empty_title">No products match that search</string>
+    <string name="state_empty_body">Try a shorter or different search term.</string>
+    <string name="action_try_again">Try again</string>
+    <string name="action_retry">Retry</string>
+
+    <string name="load_more">Loading more</string>
+    <string name="load_more_failed">Couldn\'t load more.</string>
+
+    <string name="error_network">Check your connection and try again.</string>
+    <string name="error_server">The server is not responding. Try again in a moment.</string>
+    <string name="error_unexpected">Something went wrong. Try again.</string>
+
+    <string name="detail_title">Product</string>
+    <string name="detail_in_stock">%1$d in stock</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_product_image">Product image</string>
 </resources>

@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="muted">#FF6E6E68</color>
+    <color name="placeholder_ink">#FFB9B9B1</color>
+    <color name="placeholder">#FFF0F0EC</color>
+    <color name="surface_subtle">#FFF4F4F2</color>
+    <color name="border">#FFE6E6E1</color>
+    <color name="ink">#FF16161A</color>
+    <color name="accent">#FF14524A</color>
+
 </resources>
