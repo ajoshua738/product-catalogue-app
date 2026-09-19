@@ -42,7 +42,23 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
+
+    // Recycler view
     implementation(libs.androidx.recyclerview)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // View model
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.coil)
+
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -9,6 +9,8 @@ import com.example.productcatalogueapp.core.asPrice
 import com.example.productcatalogueapp.core.asRating
 import com.example.productcatalogueapp.databinding.ItemProductBinding
 import com.example.productcatalogueapp.domain.model.Product
+import coil.load
+import com.example.productcatalogueapp.R
 
 class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DIFF) {
 
@@ -29,7 +31,14 @@ class ProductAdapter : ListAdapter<Product, ProductAdapter.ProductViewHolder>(DI
             textTitle.text = product.title
             textPrice.text = product.price.asPrice()
             textRating.text = product.rating.asRating()
+
+            imageThumbnail.load(product.thumbnailUrl) {
+                crossfade(true)
+                placeholder(R.drawable.ic_image_placeholder)
+                error(R.drawable.ic_image_placeholder)
+            }
         }
+
     }
 
     private companion object {
