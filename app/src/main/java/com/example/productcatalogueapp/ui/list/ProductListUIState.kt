@@ -12,5 +12,6 @@ data class ProductListUiState(
     val total: Int = 0,
     val isAppending: Boolean = false,
     val appendFailed: Boolean = false,
-    val endReached: Boolean = false
-)
+    val endReached: Boolean = false,
+    val activeQuery: String = "",
+    )

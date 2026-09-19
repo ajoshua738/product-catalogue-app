@@ -1,6 +1,10 @@
 package com.example.productcatalogueapp.ui.list
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +28,11 @@ class ProductListActivity : AppCompatActivity() {
     private val productAdapter = ProductAdapter { product ->
         startActivity(ProductDetailActivity.newIntent(this, product.id))
     }
+
     private val loadMoreAdapter = LoadMoreAdapter { viewModel.onRetryAppend() }
+
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private var searchRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +40,7 @@ class ProductListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
+        setupSearchInput()
         setupObserver()
 
         binding.buttonRetry.setOnClickListener { viewModel.onRetry() }
@@ -49,10 +58,28 @@ class ProductListActivity : AppCompatActivity() {
 
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
-                // The ViewModel re-checks its own guards, so a duplicate call is harmless.
+
                 if (lastVisible >= layoutManager.itemCount - PREFETCH_DISTANCE) {
                     viewModel.loadNextPage()
                 }
+            }
+        })
+    }
+
+
+    private fun setupSearchInput() {
+        binding.inputSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchRunnable?.let { searchHandler.removeCallbacks(it) }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val query = s?.toString().orEmpty().trim()
+                val runnable = Runnable { viewModel.onSearch(query) }
+                searchRunnable = runnable
+                searchHandler.postDelayed(runnable, SEARCH_DEBOUNCE_MS)
             }
         })
     }
@@ -89,7 +116,13 @@ class ProductListActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        searchRunnable?.let { searchHandler.removeCallbacks(it) }
+        super.onDestroy()
+    }
+
     private companion object {
         const val PREFETCH_DISTANCE = 4
+        const val SEARCH_DEBOUNCE_MS = 300L
     }
 }

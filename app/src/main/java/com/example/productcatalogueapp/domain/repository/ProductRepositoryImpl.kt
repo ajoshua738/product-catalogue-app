@@ -57,6 +57,13 @@ class ProductRepositoryImpl(
             }
         }
 
+    override suspend fun searchProducts(
+        query: String,
+        limit: Int,
+        skip: Int
+    ): AppResult<ProductPage> =
+        safeApiCall { api.searchProducts(query, limit, skip).toDomain() }
+
     private companion object {
         const val TAG = "ProductRepository"
     }

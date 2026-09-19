@@ -17,4 +17,10 @@ interface ProductAPI {
     @GET("products/{id}")
     suspend fun getProduct(@Path("id") id: Int): ProductDTO
 
+    @GET("products/search")
+    suspend fun searchProducts(
+        @Query("q") query: String,
+        @Query("limit") limit: Int,
+        @Query("skip") skip: Int
+    ): ProductListResponse
 }

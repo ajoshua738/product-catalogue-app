@@ -8,4 +8,6 @@ interface ProductRepository {
     suspend fun getProducts(limit: Int, skip: Int): AppResult<ProductPage>
 
     suspend fun getProductDetail(id: Int): AppResult<Product>
+
+    suspend fun searchProducts(query: String, limit: Int, skip: Int): AppResult<ProductPage>
 }

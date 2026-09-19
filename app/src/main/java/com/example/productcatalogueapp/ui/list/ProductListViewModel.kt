@@ -23,10 +23,15 @@ class ProductListViewModel(
     private var loadJob: Job? = null
 
     init {
-        loadFirstPage()
+        loadFirstPage(query = "")
     }
 
-    fun onRetry() = loadFirstPage()
+    fun onSearch(query: String) {
+        if (query == state.activeQuery) return
+        loadFirstPage(query)
+    }
+
+    fun onRetry() = loadFirstPage(state.activeQuery)
 
     fun onRetryAppend() = loadNextPage(force = true)
 
@@ -38,7 +43,7 @@ class ProductListViewModel(
         setState(state.copy(isAppending = true, appendFailed = false))
 
         viewModelScope.launch {
-            when (val result = repository.getProducts(PAGE_SIZE, state.products.size)) {
+            when (val result = fetch(state.activeQuery, skip = state.products.size)) {
                 is AppResult.Success -> {
                     val combined = state.products + result.data.products
                     setState(
@@ -53,18 +58,20 @@ class ProductListViewModel(
 
                 is AppResult.Failure -> {
                     Logger.e(TAG, "Append failed: ${result.error}")
+                    // Products stay on screen; only the footer reports the failure.
                     setState(state.copy(isAppending = false, appendFailed = true))
                 }
             }
         }
     }
 
-    private fun loadFirstPage() {
+    private fun loadFirstPage(query: String) {
         loadJob?.cancel()
 
         setState(
             state.copy(
                 screenState = ScreenState.Loading,
+                activeQuery = query,
                 isAppending = false,
                 appendFailed = false,
                 error = null
@@ -72,7 +79,7 @@ class ProductListViewModel(
         )
 
         loadJob = viewModelScope.launch {
-            when (val result = repository.getProducts(PAGE_SIZE, 0)) {
+            when (val result = fetch(query, skip = 0)) {
                 is AppResult.Success -> {
                     val page = result.data
                     setState(
@@ -98,6 +105,12 @@ class ProductListViewModel(
         }
     }
 
+    private suspend fun fetch(query: String, skip: Int) =
+        if (query.isBlank()) {
+            repository.getProducts(PAGE_SIZE, skip)
+        } else {
+            repository.searchProducts(query.trim(), PAGE_SIZE, skip)
+        }
 
     // End pagination on empty page
     private fun isEndReached(loaded: Int, page: ProductPage) =
